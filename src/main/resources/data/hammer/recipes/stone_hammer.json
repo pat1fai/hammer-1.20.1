@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BIB",
+    " S ",
+    " S "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:andesite"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "B": {
+      "item": "minecraft:stone"
+    }
+  },
+  "result": {
+    "item": "hammer:stone_hammer",
+    "count": 1
+  }
+}

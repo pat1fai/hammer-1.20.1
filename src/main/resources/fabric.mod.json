@@ -9,7 +9,7 @@
 	],
 	"contact": {
 		"homepage": "*",
-		"sources": "*"
+		"sources": "https://github.com/pat1fai/hammer-1.20.1"
 	},
 	"license": "MIT",
 	"icon": "assets/hammer/icon.png",
