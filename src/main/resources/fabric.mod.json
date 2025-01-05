@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "hammer",
+	"version": "${version}",
+	"name": "Hammer",
+	"description": "Penis for Roma ass",
+	"authors": [
+		"pat1fai, ukm4ks"
+	],
+	"contact": {
+		"homepage": "*",
+		"sources": "*"
+	},
+	"license": "MIT",
+	"icon": "assets/hammer/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.hammer.HammerMod"
+		],
+		"client": [
+			"net.hammer.HammerClient"
+		],
+		"fabric-datagen": [
+			"net.hammer.HammerDataGenerator"
+		]
+	},
+	"mixins": [
+		"hammer.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.9",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
