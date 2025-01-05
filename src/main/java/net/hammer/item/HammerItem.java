@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 public class HammerItem extends PickaxeItem {
@@ -24,8 +23,7 @@ public class HammerItem extends PickaxeItem {
             } else {
                 float yaw = player.getYaw();
                 float pitch = player.getPitch();
-
-                destroyBlocksInFront(stack, world, pos, player, yaw, pitch);
+                destroyBlocksInPlane(stack, world, pos, player, yaw, pitch);
             }
         }
 
@@ -39,35 +37,51 @@ public class HammerItem extends PickaxeItem {
                 blockName.equals("block.minecraft.sand");
     }
 
-    private void destroyBlocksInFront(ItemStack stack, World world, BlockPos center, PlayerEntity player, float yaw, float pitch) {
-        Vec3i direction = getDirectionVector(yaw, pitch);
-
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dy = -1; dy <= 1; dy++) {
+    private void destroyBlocksInPlane(ItemStack stack, World world, BlockPos center, PlayerEntity player, float yaw, float pitch) {
+        if (pitch > 45) { // Смотрит вниз
+            for (int dx = -1; dx <= 1; dx++) {
                 for (int dz = -1; dz <= 1; dz++) {
-                    BlockPos targetPos = center.add(direction.getX() + dx, direction.getY() + dy, direction.getZ() + dz);
+                    BlockPos targetPos = center.add(dx, 0, dz); // Плоскость X-Z текущего слоя
                     destroyBlock(stack, world, targetPos, player);
+                }
+            }
+        } else if (pitch < -45) { // Смотрит вверх
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    BlockPos targetPos = center.add(dx, 0, dz); // Слой X-Z над текущим слоем
+                    destroyBlock(stack, world, targetPos, player);
+                }
+            }
+        } else {
+            double radYaw = Math.toRadians(yaw);
+            int dirX = (int) Math.round(-Math.sin(radYaw)); // Направление X взгляда
+            int dirZ = (int) Math.round(Math.cos(radYaw));  // Направление Z взгляда
+
+            if (Math.abs(dirX) > Math.abs(dirZ)) {
+                // Если игрок смотрит влево/вправо (по оси X)
+                for (int dz = -1; dz <= 1; dz++) {
+                    for (int dy = -1; dy <= 1; dy++) {
+                        BlockPos targetPos = center.add(0, dy, dz); // Область Y-Z
+                        destroyBlock(stack, world, targetPos, player);
+                    }
+                }
+            } else {
+                // Если игрок смотрит вперед/назад (по оси Z)
+                for (int dx = -1; dx <= 1; dx++) {
+                    for (int dy = -1; dy <= 1; dy++) {
+                        BlockPos targetPos = center.add(dx, dy, 0); // Область X-Y
+                        destroyBlock(stack, world, targetPos, player);
+                    }
                 }
             }
         }
     }
 
-    private Vec3i getDirectionVector(float yaw, float pitch) {
-        double radYaw = Math.toRadians(yaw);
-        double radPitch = Math.toRadians(pitch);
-
-        int x = (int) -Math.sin(radYaw);
-        int y = (int) -Math.sin(radPitch);
-        int z = (int) Math.cos(radYaw);
-
-        return new Vec3i(x, y, z);
-    }
-
     private void destroyBlock(ItemStack stack, World world, BlockPos pos, PlayerEntity player) {
-        BlockState state = world.getBlockState(pos);
-        if (!state.isAir() && state.getHardness(world, pos) >= 0) { // Проверка: блок существует и разрушаем
-            world.breakBlock(pos, true, player); // Разрушаем блок
-            stack.damage(1, player, p -> p.sendToolBreakStatus(p.getActiveHand())); // Урон инструменту
+        BlockState blockState = world.getBlockState(pos);
+        if (!blockState.isAir() && blockState.getHardness(world, pos) >= 0) { // Проверяем, что блок существует и поддается разрушению
+            world.breakBlock(pos, true, player); // Ломаем блок с выпадением дропа
+            stack.damage(1, player, p -> p.sendToolBreakStatus(p.getActiveHand())); // Уменьшаем прочность инструмента
         }
     }
 }
