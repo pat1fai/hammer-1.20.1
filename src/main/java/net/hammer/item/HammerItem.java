@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 
 public class HammerItem extends PickaxeItem {
@@ -19,12 +19,13 @@ public class HammerItem extends PickaxeItem {
     @Override
     public boolean postMine(ItemStack stack, World world, BlockState state, BlockPos pos, LivingEntity miner) {
         if (!world.isClient() && miner instanceof PlayerEntity player) {
-            // Проверяем: если земля или гравий — ломаем только один блок
             if (isSingleBlockBreaking(state)) {
                 stack.damage(1, player, p -> p.sendToolBreakStatus(p.getActiveHand()));
             } else {
-                // Ломаем в области 3x3 вокруг блока
-                destroyArea3x3(stack, world, pos, player);
+                float yaw = player.getYaw();
+                float pitch = player.getPitch();
+
+                destroyBlocksInFront(stack, world, pos, player, yaw, pitch);
             }
         }
 
@@ -32,27 +33,38 @@ public class HammerItem extends PickaxeItem {
     }
 
     private boolean isSingleBlockBreaking(BlockState state) {
-        // Проверяем, если блок земля или гравий — ломаем только один блок
         String blockName = state.getBlock().getTranslationKey();
-        return blockName.equals("block.minecraft.dirt") || blockName.equals("block.minecraft.gravel");
+        return blockName.equals("block.minecraft.dirt") ||
+                blockName.equals("block.minecraft.gravel") ||
+                blockName.equals("block.minecraft.sand");
     }
 
-    private void destroyArea3x3(ItemStack stack, World world, BlockPos center, PlayerEntity player) {
-        // Разрушаем область 3x3 вокруг блока
+    private void destroyBlocksInFront(ItemStack stack, World world, BlockPos center, PlayerEntity player, float yaw, float pitch) {
+        Vec3i direction = getDirectionVector(yaw, pitch);
+
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
                 for (int dz = -1; dz <= 1; dz++) {
-                    BlockPos targetPos = center.add(dx, dy, dz); // Смещение по X, Y и Z
+                    BlockPos targetPos = center.add(direction.getX() + dx, direction.getY() + dy, direction.getZ() + dz);
                     destroyBlock(stack, world, targetPos, player);
                 }
             }
         }
     }
 
-    private void destroyBlock(ItemStack stack, World world, BlockPos pos, PlayerEntity player) {
-        // Ломаем блок, если это возможно
-        BlockState state = world.getBlockState(pos);
+    private Vec3i getDirectionVector(float yaw, float pitch) {
+        double radYaw = Math.toRadians(yaw);
+        double radPitch = Math.toRadians(pitch);
 
+        int x = (int) -Math.sin(radYaw);
+        int y = (int) -Math.sin(radPitch);
+        int z = (int) Math.cos(radYaw);
+
+        return new Vec3i(x, y, z);
+    }
+
+    private void destroyBlock(ItemStack stack, World world, BlockPos pos, PlayerEntity player) {
+        BlockState state = world.getBlockState(pos);
         if (!state.isAir() && state.getHardness(world, pos) >= 0) { // Проверка: блок существует и разрушаем
             world.breakBlock(pos, true, player); // Разрушаем блок
             stack.damage(1, player, p -> p.sendToolBreakStatus(p.getActiveHand())); // Урон инструменту
