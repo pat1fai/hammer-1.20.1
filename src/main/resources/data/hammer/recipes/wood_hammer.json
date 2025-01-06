@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BIB",
+    " S ",
+    " S "
+  ],
+  "key": {
+    "B": {
+      "tag": "minecraft:logs"
+    },
+    "I": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "hammer:wood_hammer",
+    "count": 1
+  }
+}

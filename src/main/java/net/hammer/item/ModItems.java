@@ -9,6 +9,9 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
+import net.minecraft.recipe.ShapedRecipe;
+
+
 public class ModItems {
     public static final Item WOODHAMMER = new HammerItem(
             ModToolMaterial.WOODHAMMER, 1, -1F, new FabricItemSettings()
@@ -25,6 +28,9 @@ public class ModItems {
     public static final Item DIAMONDHAMMER = new HammerItem(
             ModToolMaterial.DIAMONDHAMMER, 3, -3F, new FabricItemSettings()
     );
+    public static final Item NETHERITEHAMMER = new HammerItem(
+            ModToolMaterial.NETHERITEHAMMER, 5, -3F, new FabricItemSettings()
+    );
 
 
     public static void registerModItems() {
@@ -35,6 +41,7 @@ public class ModItems {
         Registry.register(Registries.ITEM, new Identifier(HammerMod.MOD_ID, "iron_hammer"), IRONHAMMER);
         Registry.register(Registries.ITEM, new Identifier(HammerMod.MOD_ID, "gold_hammer"), GOLDHAMMER);
         Registry.register(Registries.ITEM, new Identifier(HammerMod.MOD_ID, "diamond_hammer"), DIAMONDHAMMER);
+        Registry.register(Registries.ITEM, new Identifier(HammerMod.MOD_ID, "netherite_hammer"), NETHERITEHAMMER);
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
             entries.add(WOODHAMMER);
@@ -42,6 +49,8 @@ public class ModItems {
             entries.add(IRONHAMMER);
             entries.add(GOLDHAMMER);
             entries.add(DIAMONDHAMMER);
+            entries.add(NETHERITEHAMMER);
         });
     }
+
 }

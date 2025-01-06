@@ -11,7 +11,8 @@ public enum ModToolMaterial implements ToolMaterial {
     STONEHAMMER(1, 380, 4F, 2F, 7, () -> Ingredient.ofItems(Items.COBBLESTONE)),
     IRONHAMMER(2,700, 7F, 3F, 15, () -> Ingredient.ofItems(Items.IRON_INGOT)),
     GOLDHAMMER(0, 150, 14F, 0F, 22, () -> Ingredient.ofItems(Items.GOLD_INGOT)),
-    DIAMONDHAMMER(3, 3122, 10F, 4F, 20, () -> Ingredient.ofItems(Items.DIAMOND));
+    DIAMONDHAMMER(3, 3122, 10F, 4F, 20, () -> Ingredient.ofItems(Items.DIAMOND)),
+    NETHERITEHAMMER(4, 4062, 14F, 6F, 34, () -> Ingredient.ofItems(Items.NETHERITE_INGOT));
 
     private final int miningLevel;
     private final int itemDurability;
