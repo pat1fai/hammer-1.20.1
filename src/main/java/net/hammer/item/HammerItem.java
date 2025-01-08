@@ -1,4 +1,4 @@
-  package net.hammer.item;
+package net.hammer.item;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
