@@ -19,6 +19,9 @@ public class ModItems {
     public static final Item STONEHAMMER = new HammerItem(
             ModToolMaterial.STONEHAMMER, 2, -2F, new FabricItemSettings()
     );
+    public static final Item COPPERHAMMER = new HammerItem(
+            ModToolMaterial.COPPERHAMMER, 2, -3F, new FabricItemSettings()
+    );
     public static final Item IRONHAMMER = new HammerItem(
             ModToolMaterial.IRONHAMMER, 3, -3F, new FabricItemSettings()
     );
@@ -38,6 +41,7 @@ public class ModItems {
 
         Registry.register(Registries.ITEM, new Identifier(HammerMod.MOD_ID, "wood_hammer"), WOODHAMMER);
         Registry.register(Registries.ITEM, new Identifier(HammerMod.MOD_ID, "stone_hammer"), STONEHAMMER);
+        Registry.register(Registries.ITEM, new Identifier(HammerMod.MOD_ID, "copper_hammer"), COPPERHAMMER);
         Registry.register(Registries.ITEM, new Identifier(HammerMod.MOD_ID, "iron_hammer"), IRONHAMMER);
         Registry.register(Registries.ITEM, new Identifier(HammerMod.MOD_ID, "gold_hammer"), GOLDHAMMER);
         Registry.register(Registries.ITEM, new Identifier(HammerMod.MOD_ID, "diamond_hammer"), DIAMONDHAMMER);
@@ -46,6 +50,7 @@ public class ModItems {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
             entries.add(WOODHAMMER);
             entries.add(STONEHAMMER);
+            entries.add(COPPERHAMMER);
             entries.add(IRONHAMMER);
             entries.add(GOLDHAMMER);
             entries.add(DIAMONDHAMMER);

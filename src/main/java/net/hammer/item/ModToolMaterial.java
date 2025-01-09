@@ -7,8 +7,9 @@ import net.minecraft.recipe.Ingredient;
 import java.util.function.Supplier;
 
 public enum ModToolMaterial implements ToolMaterial {
-    WOODHAMMER(0, 250, 2F, 1F, 14, () -> Ingredient.ofItems(Items.WOODEN_PICKAXE)),
-    STONEHAMMER(1, 380, 4F, 2F, 7, () -> Ingredient.ofItems(Items.COBBLESTONE)),
+    WOODHAMMER(0, 250, 2F, 1F, 7, () -> Ingredient.ofItems(Items.WOODEN_PICKAXE)),
+    STONEHAMMER(1, 380, 4F, 2F, 12, () -> Ingredient.ofItems(Items.COBBLESTONE)),
+    COPPERHAMMER(2, 450, 5F, 3F,13, () -> Ingredient.ofItems(Items.COPPER_INGOT)),
     IRONHAMMER(2,700, 7F, 3F, 15, () -> Ingredient.ofItems(Items.IRON_INGOT)),
     GOLDHAMMER(0, 150, 14F, 0F, 22, () -> Ingredient.ofItems(Items.GOLD_INGOT)),
     DIAMONDHAMMER(3, 3122, 10F, 4F, 20, () -> Ingredient.ofItems(Items.DIAMOND)),
